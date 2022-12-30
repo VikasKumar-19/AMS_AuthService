@@ -76,7 +76,7 @@ class UserService {
       }
       const user = await this.userRepository.getById(response.id);
       if (!user) {
-        throw { error: "No user with the corresponding token exists" }; 
+        throw { error: "No user with the corresponding token exists" };
       }
       return user.id;
     } catch (error) {
@@ -89,7 +89,16 @@ class UserService {
     try {
       return bcrypt.compareSync(userInputPlainPassword, encryptedPassword);
     } catch (error) {
-      console.log("Something went wront in password comparision");
+      console.log("Something went wrong in password comparision");
+      throw error;
+    }
+  }
+
+  async isAdmin(userId) {
+    try {
+      return await this.userRepository.isAdmin(userId);
+    } catch (error) {
+      console.log("Something went wrong in service layer");
       throw error;
     }
   }
